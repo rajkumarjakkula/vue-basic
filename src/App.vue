@@ -10,13 +10,40 @@
   <button @mouseover="increment">increase</button>
     <button @click="count-=1">decrease</button>
     <div>
-      {{formValues}}
+      {{formValue}}
     </div>
-  <form>
+  <form @submit="testing">
     <div v-bind:style="{backgroundColor:'red'}"> 
       <label for="name">Name</label><br>
-      <input type="text" id="name" placeholder="Enter the name" v-model="formValues.name">
+      <input type="text" id="name" placeholder="Enter the name" v-model="formValue.name">
     </div>
+    <div>
+      <label for="name">Select Country:</label><br>
+      <select id="country" v-model="formValue.selectedValue">
+        <option value="">Select a Country</option>
+        <option value="india">India</option>
+        <option value="america"> USE</option>
+      </select>
+    </div>
+    <div>
+      <label for="name">Select Country:</label><br>
+      <select id="country"  multiple v-model="formValue.multipleValue">
+        <option value="">Select a Country</option>
+        <option value="india">India</option>
+        <option value="america"> USE</option>
+      </select>
+    </div>
+
+    <div>
+      <input type="checkbox" id="checked" v-model="formValue.checked" true-value="yes" false-value="no">
+    </div>
+     <div>
+    <label for="name">Skill List</label><br>
+      <input type="checkbox" id="checked" v-model="formValue.skillList" value="CSS">
+      <input type="checkbox" id="checked" v-model="formValue.skillList" value="HTML">
+
+    </div>
+    <button type="submit">Submit</button>
   </form>
 </template>
 
@@ -32,8 +59,12 @@ export default {
     console.log("hello");
     let count=10;
     return {
-      formValues:{
-        name:''
+      formValue:{
+        name:'',
+        selectedValue:'',
+        multipleValue:[],
+        checked:false,
+        skillList:[]
       },
       count: count,
       name: 'Rajkumar',
@@ -41,11 +72,14 @@ export default {
     }
   },
    methods:{
-     
+     testing(event){
+       event.preventDefault();
+       console.log(this.formValue)
+     },
      add:(event)=>{
        console.log("i am here")
        console.log("here",event)
-       return {Hell:"10"}
+       return "10"
      }
   }
   }
