@@ -5,9 +5,8 @@
   <div v-html="alertCheck"></div>
   <div :id="name">{{name}}</div>
   <div class="Rajkumar">{{name}}</div>
-  <button v-on:click="add($event)">{{Hell}}</button>
   <h1>{{count}}</h1>
-  <button @mouseover="increment">increase</button>
+  <button @mouseover="count+=1">increase</button>
     <button @click="count-=1">decrease</button>
     <div>
       {{formValue}}
@@ -15,7 +14,11 @@
   <form @submit="testing">
     <div v-bind:style="{backgroundColor:'red'}"> 
       <label for="name">Name</label><br>
-      <input type="text" id="name" placeholder="Enter the name" v-model="formValue.name">
+      <input type="text" id="name" placeholder="Enter the name" v-model.trim="formValue.name">
+    </div>
+    <div> 
+      <label for="name">Enter Number</label><br>
+      <input type="text" id="name" placeholder="Enter the number" v-model.number="formValue.age">
     </div>
     <div>
       <label for="name">Select Country:</label><br>
@@ -45,34 +48,77 @@
     </div>
     <button type="submit">Submit</button>
   </form>
+
+  <!-- other diretives
+  v-once load the page only once.
+  v-pre  
+   -->
+
+   <!-- Computed Properties -->
+
+   <h1>{{firstName}} {{lastName}}</h1>
+   <h1>{{fullName}}</h1>
+
+   <!-- components -->
+   <div v-bind:style='{display:"flex"}'>
+    <helloWorld msg="hello"/>
+   <helloWorld/>
+   <helloWorld/>
+   <helloWorld/>
+   </div>
+    <!-- <template> -->
+    <posts :msg="data"/>
+    <!-- </template> -->
+    <button @click="getPosts">Get all Posts</button>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from './components/HelloWorld.vue'
+import Posts from './components/Posts.vue'
+import axios from 'axios'
 export default {
   name: 'App',
-  // components: {
-  //   HelloWorld
-  // },
+  components: {
+    HelloWorld,
+    Posts
+  },
   data(){
-    
     console.log("hello");
     let count=10;
     return {
+      data:null,
+      firstName:'rajkumar',
+      lastName: 'Jakkula',
       formValue:{
         name:'',
         selectedValue:'',
         multipleValue:[],
         checked:false,
-        skillList:[]
+        skillList:[],
+        age:null
       },
       count: count,
       name: 'Rajkumar',
       alertCheck: '<a href="/about">Hello </a>'
     }
   },
+   computed:{
+       fullName(){
+         return `${this.firstName} ${this.lastName}`
+       }
+     },
    methods:{
+     getPosts(){
+       axios.get('https://jsonplaceholder.typicode.com/posts')
+       .then(data=>
+       this.data=data
+       )
+       .catch(err=>
+       console.log(err)
+       )
+     },
      testing(event){
+       console.log("Hello fron testing")
        event.preventDefault();
        console.log(this.formValue)
      },
